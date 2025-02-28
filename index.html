@@ -1,7 +1,33 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Redirecting...</title>
+    <script>
+        // Configuration
+        const FORMS = [
+            "https://docs.google.com/forms/d/e/1FAIpQLSd2eHXDArbFycjreHqaW59_RLOr1Rc6rXZ9v2GFCfzk-5kvjA/viewform?usp=header",
+            "https://docs.google.com/forms/d/e/1FAIpQLSeXZesIe_0ovYVQdSa0YJUB7GtzIYZ_BXHKvAh1CfaxO9kNRg/viewform?usp=header",
+            "https://docs.google.com/forms/d/e/1FAIpQLSedi_xTU2GmxzzXv4jzWbxvr65QWHA0oc298YXrNFIdIq3GTg/viewform?usp=header",
+            "https://docs.google.com/forms/d/e/1FAIpQLSfkO93lQAkhMRk4ZoLDLq2Vd8xUMTmfwnZ3wvLQCHvhyg0x1Q/viewform?usp=header",
+            "https://docs.google.com/forms/d/e/1FAIpQLSeeKRADi2GDs8LrbYllQr9IxyNg7snz7Y2h01zkPGLhH2mCSg/viewform?usp=header",
+            "https://docs.google.com/forms/d/e/1FAIpQLSdtRP0n6n8j57dNOGBWH4F8dRBZ9TAvx_Gh4rgT5eEz85Jfww/viewform?usp=header"
+        ];
+        
+        const COUNTS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEbcuY0K0OUPldooVdseWzr6ZPUyhUC9xXI1slvlSNFrx-5NyXbcfHCDDg9H1EEBrDMbSrdgiPaIo3/pub?gid=0&single=true&output=csv";
+
+        // Fetch and redirect
+        fetch(COUNTS_CSV_URL)
+            .then(r => r.text())
+            .then(csv => {
+                const counts = csv.split(',')[0].split('\n')[0].split(',').map(Number);
+                const minCount = Math.min(...counts);
+                const targetIndex = counts.indexOf(minCount);
+                window.location.replace(FORMS[targetIndex]);
+            })
+            .catch(() => window.location.replace(FORMS[0])); // Fallback
+    </script>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    Redirecting to the survey...
 </body>
 </html>
