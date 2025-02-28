@@ -16,7 +16,7 @@
         const COUNTS_API_URL = "https://docs.google.com/spreadsheets/d/1YN97U8VRPTg-nn9LaKRc9mD-AKWlOgTRFd9lvWS2px0/gviz/tq?tqx=out:csv&sheet=Sheet1";
 
         // Fetch and redirect
-        fetch(COUNTS_CSV_URL)
+        fetch(COUNTS_API_URL)
             .then(response => response.text())
             .then(csv => {
                 // Parse CSV data correctly
