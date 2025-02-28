@@ -21,7 +21,7 @@
             .then(csv => {
                 // Parse CSV data correctly
                 const lines = csv.trim().split('\n');
-                const counts = lines[0].split(',').map(Number); // First row only
+                const counts = lines[0].split(',').map(Number);
 
                 // Find forms with the lowest count
                 const minCount = Math.min(...counts);
@@ -31,13 +31,12 @@
                     if (count === minCount) eligibleForms.push(index);
                 });
 
-                // Randomly select among eligible forms (to avoid always picking the first one)
+                // Randomly select among eligible forms
                 const randomIndex = eligibleForms[Math.floor(Math.random() * eligibleForms.length)];
                 window.location.href = FORMS[randomIndex];
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Fallback: Redirect to first form if parsing fails
                 window.location.href = FORMS[0];
             });
     </script>
