@@ -15,25 +15,32 @@
         
         const COUNTS_API_URL = "https://docs.google.com/spreadsheets/d/1YN97U8VRPTg-nn9LaKRc9mD-AKWlOgTRFd9lvWS2px0/gviz/tq?tqx=out:csv&sheet=Sheet1";
 
-        fetch(COUNTS_API_URL)
-        .then(r => r.text())
-        .then(csv => {
-            // Extract the first row of data (response counts)
-            const counts = csv.split('\n')[0].split(',').map(Number);
-            
-            // Find the form(s) with the lowest count
-            const minCount = Math.min(...counts);
-            const eligibleForms = counts
-            .map((count, index) => count === minCount ? index : -1)
-            .filter(index => index !== -1);
-            
-            // Randomly select from eligible forms to avoid bias
-            const targetIndex = eligibleForms[Math.floor(Math.random() * eligibleForms.length)];
-            
-            window.location.href = FORMS[targetIndex];
-        })
-        .catch(() => window.location.href = FORMS[0]); // Fallback
-        </script>
+        // Fetch and redirect
+        fetch(COUNTS_CSV_URL)
+            .then(response => response.text())
+            .then(csv => {
+                // Parse CSV data correctly
+                const lines = csv.trim().split('\n');
+                const counts = lines[0].split(',').map(Number); // First row only
+
+                // Find forms with the lowest count
+                const minCount = Math.min(...counts);
+                const eligibleForms = [];
+                
+                counts.forEach((count, index) => {
+                    if (count === minCount) eligibleForms.push(index);
+                });
+
+                // Randomly select among eligible forms (to avoid always picking the first one)
+                const randomIndex = eligibleForms[Math.floor(Math.random() * eligibleForms.length)];
+                window.location.href = FORMS[randomIndex];
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Fallback: Redirect to first form if parsing fails
+                window.location.href = FORMS[0];
+            });
+    </script>
 </head>
 <body>
     Redirecting to the survey...
