@@ -13,18 +13,24 @@
             "https://docs.google.com/forms/d/e/1FAIpQLSdtRP0n6n8j57dNOGBWH4F8dRBZ9TAvx_Gh4rgT5eEz85Jfww/viewform?usp=header"
         ];
         
-        const COUNTS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEbcuY0K0OUPldooVdseWzr6ZPUyhUC9xXI1slvlSNFrx-5NyXbcfHCDDg9H1EEBrDMbSrdgiPaIo3/pub?gid=0&single=true&output=csv";
+        const timestamp = new Date().getTime();
+        const COUNTS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEbcuY0K0OUPldooVdseWzr6ZPUyhUC9xXI1slvlSNFrx-5NyXbcfHCDDg9H1EEBrDMbSrdgiPaIo3/pub?output=csv" + "?t=" + timestamp;
 
         // Fetch and redirect
         fetch(COUNTS_CSV_URL)
-            .then(r => r.text())
-            .then(csv => {
-                const counts = csv.split(',')[0].split('\n')[0].split(',').map(Number);
-                const minCount = Math.min(...counts);
-                const targetIndex = counts.indexOf(minCount);
-                window.location.replace(FORMS[targetIndex]);
-            })
-            .catch(() => window.location.replace(FORMS[0])); // Fallback
+    .then(r => r.text())
+    .then(csv => {
+        console.log("Raw CSV:", csv); // Debug line
+        const counts = csv.split(',')[0].split('\n')[0].split(',').map(Number);
+        console.log("Parsed counts:", counts); // Debug line
+        const minCount = Math.min(...counts);
+        const targetIndex = counts.indexOf(minCount);
+        window.location.replace(FORMS[targetIndex]);
+    })
+    .catch((error) => {
+        console.error("Error:", error); // Debug line
+        window.location.replace(FORMS[0]);
+    });
     </script>
 </head>
 <body>
