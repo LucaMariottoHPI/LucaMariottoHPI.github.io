@@ -36,7 +36,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                window.location.href = FORMS[0];
+                window.location.href = FORMS[Math.floor(Math.random() * FORMS.length)];
             });
     </script>
 </head>
